@@ -1,0 +1,49 @@
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        # m x n 2d array of ints
+        # - each row sorted in ascending order
+        # - each entire row is less than next entire row
+        # integer target
+        
+        '''
+        brute force: to search using nested loop for the integer, which would require
+         0(n^2) time
+
+        goal is to get this down to O(log m + log n)
+
+        to optimize that, we can be binary on the middle item (n-1/2) 
+
+        and be binary on the m value
+
+        structure:
+
+        bs on the m value until you find something 
+        bs on the n value until ypou find something
+        '''
+        array = [[1,2,3], [4,5,7], [7,8,9]]
+        ROWS, COLS = len(matrix), len(matrix[0])
+
+
+        l, r = 0, ROWS * COLS - 1 # imagine the entire 2d array is a 1d array
+                                  # map the m val to a pos
+
+        while l <= r: # since we are tyring to find the exact value
+            m = (l + r) // 2 
+
+            row, col = m // COLS, m % COLS # // maps to row, % maps to col
+            # row -> You've filled 1 complete row of 4 elements, so you're on row 1.
+            # col -> After filling one full row, you're 2 spots into the next row, so you're on column 2.
+            
+            # the rest is the canonical exact search binary search
+            if target > matrix[row][col]:
+                l = m + 1
+
+            elif target < matrix[row][col]:
+                r = m - 1
+            else:
+                return True
+                
+        return False
+
+
+        
